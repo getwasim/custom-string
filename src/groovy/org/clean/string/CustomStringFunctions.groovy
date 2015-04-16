@@ -25,7 +25,7 @@ class CustomStringFunctions {
         }
 
         String.metaClass.clean = {
-            Normalizer.normalize(delegate, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "")
+            FixChar.removeSpecialCharacter(delegate)
         }
     }
 

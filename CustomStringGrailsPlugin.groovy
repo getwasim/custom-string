@@ -15,7 +15,10 @@ class CustomStringGrailsPlugin {
     def authorEmail = "wasim.get@gmail.com"
     def title = "Added custom methods to String metaclass"
     def description = '''\\
-This plugin adds few custom methods to String class. 1) trunc() to truncate a string to some length. 2) ellipsis() to add "..." after the truncation. 3) clean() to clean the string content from all special characters and UTF-8 encoding
+    This plugin adds few custom methods to String class.
+    1) trunc() to truncate a string to some length.
+    2) ellipsis() to add "..." after the truncation.
+    3) clean() to clean the string content from all special characters and UTF-8 encoding.
 '''
 
     // URL to the plugin's documentation
