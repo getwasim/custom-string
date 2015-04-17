@@ -1,14 +1,12 @@
 package org.clean.string
 
-import java.text.Normalizer
-
 /**
- * Created by wasim on 15/4/15.
+ * @author wasim
  */
 class CustomStringFunctions {
 
     static void inject() {
-        String.metaClass.trunc = { len ->
+        String.metaClass.trunc = { int len ->
             if (len < delegate.length()) {
                 delegate[0..len - 1]
             } else {
@@ -16,7 +14,7 @@ class CustomStringFunctions {
             }
         }
 
-        String.metaClass.ellipsis = { len ->
+        String.metaClass.ellipsis = { int len ->
             if (len < delegate.length()) {
                 delegate[0..len - (ELLIPSIS.size() + 1)] + ELLIPSIS
             } else {
@@ -24,9 +22,8 @@ class CustomStringFunctions {
             }
         }
 
-        String.metaClass.clean = {
+        String.metaClass.clean = { ->
             FixChar.removeSpecialCharacter(delegate)
         }
     }
-
 }

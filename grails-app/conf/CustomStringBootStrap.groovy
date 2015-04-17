@@ -2,10 +2,8 @@ import org.clean.string.CustomStringFunctions
 
 class CustomStringBootStrap {
 
-    def init = { servletContext ->
+    def init = {
         println "Class initialized... "
         CustomStringFunctions.inject()
-    }
-    def destroy = {
     }
 }
