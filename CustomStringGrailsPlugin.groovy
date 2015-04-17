@@ -1,3 +1,5 @@
+import org.clean.string.FixChar
+
 class CustomStringGrailsPlugin {
     def version = "0.1"
     def grailsVersion = "2.2 > *"
@@ -9,4 +11,29 @@ class CustomStringGrailsPlugin {
     def license = 'APACHE'
     def issueManagement = [url: 'https://github.com/getwasim/CustomString/issues']
     def scm = [url: 'https://github.com/getwasim/CustomString']
+
+    def doWithDynamicMethods = { ctx ->
+
+        println "Class initialized... "
+
+        String.metaClass.trunc = { int len ->
+            if (len < delegate.length()) {
+                delegate[0..len - 1]
+            } else {
+                delegate
+            }
+        }
+
+        String.metaClass.ellipsis = { int len ->
+            if (len < delegate.length()) {
+                delegate[0..len - (ELLIPSIS.size() + 1)] + ELLIPSIS
+            } else {
+                delegate
+            }
+        }
+
+        String.metaClass.clean = { ->
+            FixChar.removeSpecialCharacter(delegate)
+        }
+    }
 }
