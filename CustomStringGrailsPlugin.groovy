@@ -6,4 +6,7 @@ class CustomStringGrailsPlugin {
     def title = "CustomString plugin"
     def description = 'This plugin adds a few custom methods to the String class'
     def documentation = "http://grails.org/plugin/custom-string"
+    def license = 'APACHE'
+    def issueManagement = [url: 'https://github.com/getwasim/CustomString/issues']
+    def scm = [url: 'https://github.com/getwasim/CustomString']
 }
