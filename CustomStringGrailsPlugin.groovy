@@ -1,6 +1,6 @@
 class CustomStringGrailsPlugin {
     def version = "0.1"
-    def grailsVersion = "1.3.7 > *"
+    def grailsVersion = "2.2 > *"
     def author = "Wasim Akhtar Khan"
     def authorEmail = "wasim.get@gmail.com"
     def title = "CustomString plugin"
