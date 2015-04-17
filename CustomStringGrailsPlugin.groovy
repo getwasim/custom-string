@@ -1,8 +1,8 @@
-import org.clean.string.FixChar
+import org.clean.string.CustomStringFunctions
 
 class CustomStringGrailsPlugin {
     def version = "0.1"
-    def grailsVersion = "2.2 > *"
+    def grailsVersion = "1.3.7 > *"
     def author = "Wasim Akhtar Khan"
     def authorEmail = "wasim.get@gmail.com"
     def title = "CustomString plugin"
@@ -13,27 +13,7 @@ class CustomStringGrailsPlugin {
     def scm = [url: 'https://github.com/getwasim/CustomString']
 
     def doWithDynamicMethods = { ctx ->
-
         println "Class initialized... "
-
-        String.metaClass.trunc = { int len ->
-            if (len < delegate.length()) {
-                delegate[0..len - 1]
-            } else {
-                delegate
-            }
-        }
-
-        String.metaClass.ellipsis = { int len ->
-            if (len < delegate.length()) {
-                delegate[0..len - (ELLIPSIS.size() + 1)] + ELLIPSIS
-            } else {
-                delegate
-            }
-        }
-
-        String.metaClass.clean = { ->
-            FixChar.removeSpecialCharacter(delegate)
-        }
+        CustomStringFunctions.inject()
     }
 }

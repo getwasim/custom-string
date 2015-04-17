@@ -1,291 +1,268 @@
 package org.clean.string
 
-import groovy.transform.CompileStatic
-
 import java.text.Normalizer
 
 /**
  * @author wasim
  */
-@CompileStatic
+
 class FixChar {
-    static boolean XMLQuoteMode = false
-    static boolean CSVEscapeMode = false
-    static boolean SQLEscapeMode = false
-    static long charCount = 0
-    static List<Character> extraChar = []
 
     static String removeSpecialCharacter(String text) {
-        text.toCharArray().each { handleChar((int) it) }
+        List<Character> extraChar = []
+        text.toCharArray().each { extraChar += handleChar((int) it) }
         char[] text_char = extraChar as char[]
         return Normalizer.normalize(String.valueOf(text_char), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "")
     }
 
-    static void handleChar(int d) {
-        charCount++
+    static List<Character> handleChar(int d) {
+        List<Character> extraChar = []
         switch (d) {
-            case 127:  setChar(' '); break
-            case 129:  setChar(' '); break
-            case 141:  setChar(' '); break
-            case 143:  setChar(' '); break
-            case 144:  setChar(' '); break
-            case 157:  setChar(' '); break /*absorb, no char in place */
-            case 8364: setChar(' '); break
-            case 128:  setChar('E'); break
-            case 8218 :setChar(' '); break
-            case 130:
-                if (CSVEscapeMode) setChar('\\')
-                else setChar(','); break
-            case 402:  setChar(' '); break
-            case 131:  setChar('f'); break
-            case 8222: setChar(' '); break
-            case 8220: setChar('"'); break
-            case 8221: setChar('"'); break
-            case 132:  setChar(' '); break
-            case 147:  setChar(' '); break
-            case 148:  setChar(' '); break
-            case 187:  setChar(' '); break
-            case 171:
-                if (XMLQuoteMode) {
-                    setChar('&'); setChar('q'); setChar('u'); setChar('o'); setChar('t'); setChar(';')
-                } /* esc for double quote char */
-                else setChar('"')
-                break
-            case 8230: setChar(' '); break
-            case 133:  setChar('.'); setChar('.'); setChar('.'); break
-            case 8224: setChar(' '); break
-            case 134:  setChar('('); setChar('t'); setChar(')'); break /* dagger */
-            case 8225: setChar(' '); break
-            case 135:  setChar('('); setChar('t'); setChar('t'); setChar(')'); break /* double dagger */
-            case 710:  setChar(' '); break
-            case 136:  setChar('^'); break
-            case 8240: setChar(' '); break
-            case 84:   setChar('T'); break
-            case 293:  setChar('h'); break
-            case 239:  setChar('i'); break
-            case 349:  setChar('s'); break
-            case 32:   setChar(' '); break
-            case 297:  setChar('i'); break
-            case 353:  setChar('s'); break
-            case 102:  setChar('f'); break
-            case 367:  setChar('u'); break
-            case 328:  setChar('n'); break
-            case 311:  setChar('k'); break
-            case 375:  setChar('y'); break
+            case 127:  extraChar << ' '; break
+            case 129:  extraChar << ' '; break
+            case 141:  extraChar << ' '; break
+            case 143:  extraChar << ' '; break
+            case 144:  extraChar << ' '; break
+            case 157:  extraChar << ' '; break /*absorb, no char in place */
+            case 8364: extraChar << ' '; break
+            case 128:  extraChar << 'E'; break
+            case 8218 :extraChar << ' '; break
+            case 130:  extraChar << ','; break
+            case 402:  extraChar << ' '; break
+            case 131:  extraChar << 'f'; break
+            case 8222: extraChar << ' '; break
+            case 8220: extraChar << '"'; break
+            case 8221: extraChar << '"'; break
+            case 132:  extraChar << ' '; break
+            case 147:  extraChar << ' '; break
+            case 148:  extraChar << ' '; break
+            case 187:  extraChar << ' '; break
+            case 171:  extraChar << '"'; break
+            case 8230: extraChar << ' '; break
+            case 133:  extraChar << '.'; extraChar << '.'; extraChar << '.'; break
+            case 8224: extraChar << ' '; break
+            case 134:  extraChar << '('; extraChar << 't'; extraChar << ''; break /* dagger */
+            case 8225: extraChar << ' '; break
+            case 135:  extraChar << '('; extraChar << 't'; extraChar << 't'; extraChar << ''; break /* double dagger */
+            case 710:  extraChar << ' '; break
+            case 136:  extraChar << '^'; break
+            case 8240: extraChar << ' '; break
+            case 239:  extraChar << 'i'; break
+            case 297:  extraChar << 'i'; break
+            case 353:  extraChar << 's'; break
+            case 102:  extraChar << 'f'; break
+            case 367:  extraChar << 'u'; break
+            case 328:  extraChar << 'n'; break
+            case 311:  extraChar << 'k'; break
+            case 375:  extraChar << 'y'; break
 
-            case 352:  setChar('S'); break
-            case 357:  setChar('t'); break
-            case 341:  setChar('r'); break
-            case 301:  setChar('i'); break
-            case 324:  setChar('n'); break
-            case 289:  setChar('g'); break
-            case 137:  setChar('%'); break
-            case 138:  setChar('S'); break
-            case 8249: setChar(' '); break
-            case 139:  setChar('<'); break
-            case 338:  setChar(' '); break
-            case 140:  setChar('O'); setChar('E'); break
-            case 381:  setChar(' '); break
-            case 142:  setChar('Z'); break
-            case 8216: setChar(' '); break
-            case 8217: setChar(' '); break
-            case 145:  setChar(' '); break
-            case 146:  setChar(' '); break
-            case 180:
-                setChar('\'')
-                if (SQLEscapeMode) setChar('\'') /* esc for single quote char */
-                break
-            case 8226: setChar(' '); break
-            case 8211: setChar(' '); break
-            case 8212: setChar(' '); break
-            case 149:  setChar(' '); break
-            case 150:  setChar(' '); break
-            case 151:  setChar(' '); break
-            case 166:  setChar(' '); break
-            case 173:  setChar('-'); break
-            case 732:  setChar(' '); break
-            case 152:  setChar('~'); break
-            case 8482: setChar(' '); break
-            case 153:  setChar('('); setChar('T'); setChar('M'); setChar(')'); break
-            case 154:  setChar('s'); break
-            case 8250: setChar(' '); break
-            case 155:  setChar('>'); break
-            case 339:  setChar(' '); break
-            case 156:  setChar('o'); setChar('e'); break
-            case 382:  setChar(' '); break
-            case 158:  setChar('z'); break
-            case 376:  setChar(' '); break
-            case 159:  setChar('Y'); break
-            case 160:  setChar(' '); break
-            case 9632: setChar(' '); break
-            case 182:  setChar(' '); break
-            case 161:  setChar(" "); break
-            case 172:  setChar('!'); break
-            case 162:  setChar('c'); break
-            case 163:  setChar('L'); break
-            case 164:  setChar('$'); break
-            case 165:  setChar('Y'); break
-            case 167:  setChar('S'); break
-            case 168:  setChar('.'); setChar('.'); break
-            case 169:  setChar('('); setChar('c'); setChar(')'); break
-            case 170:  setChar('a'); break
-            case 174:  setChar('('); setChar('R'); setChar(')'); break
-            case 175:  setChar(" "); break
-            case 184:  setChar('_'); break
-            case 176:  setChar(' '); break
-            case 186:  setChar('o'); break
-            case 177:  setChar('+'); setChar('-'); break
-            case 178:  setChar('2'); break
-            case 179:  setChar('3'); break
-            case 181:  setChar('u'); break
-            case 183:  setChar('.'); break
-            case 185:  setChar('1'); break
-            case 188:  setChar('1'); setChar('/'); setChar('4'); break
-            case 189:  setChar('1'); setChar('/'); setChar('2'); break
-            case 190:  setChar('3'); setChar('/'); setChar('4'); break
-            case 191:  setChar('?'); break
-            case 192:  setChar('A'); break
-            case 193:  setChar('A'); break
-            case 194:  setChar('A'); break
-            case 195:  setChar('A'); break
-            case 196:  setChar('A'); break
-            case 197:  setChar('A'); break
-            case 198:  setChar('A'); setChar('E'); break
-            case 199:  setChar('C'); break
-            case 200:  setChar('E'); break
-            case 201:  setChar('E'); break
-            case 202:  setChar('E'); break
-            case 203:  setChar('E'); break
-            case 204:  setChar('I'); break
-            case 205:  setChar('I'); break
-            case 206:  setChar('I'); break
-            case 207:  setChar('I'); break
-            case 208:  setChar('D'); break
-            case 209:  setChar('N'); break
-            case 210:  setChar('O'); break
-            case 211:  setChar('O'); break
-            case 212:  setChar('O'); break
-            case 213:  setChar('O'); break
-            case 214:  setChar('O'); break
-            case 215:  setChar('x'); break
-            case 216:  setChar('O'); break
-            case 217:  setChar('U'); break
-            case 218:  setChar('U'); break
-            case 219:  setChar('U'); break
-            case 220:  setChar('U'); break
-            case 221:  setChar('Y'); break
-            case 222:  setChar('P'); break
-            case 223:  setChar('s'); setChar('s'); break
-            case 224:  setChar('a'); break
-            case 225:  setChar('a'); break
-            case 226:  setChar('a'); break
-            case 227:  setChar('a'); break
-            case 228:  setChar('a'); break
-            case 229:  setChar('a'); break
-            case 230:  setChar('a'); setChar('e'); break
-            case 231:  setChar('c'); break
-            case 232:  setChar('e'); break
-            case 233:  setChar('e'); break
-            case 234:  setChar('e'); break
-            case 235:  setChar('e'); break
-            case 236:  setChar('i'); break
-            case 237:  setChar('i'); break
-            case 238:  setChar('i'); break
-            case 240:  setChar('d'); break
-            case 241:  setChar('n'); break
-            case 242:  setChar('o'); break
-            case 243:  setChar('o'); break
-            case 244:  setChar('o'); break
-            case 245:  setChar('o'); break
-            case 246:  setChar('o'); break
-            case 247:  setChar('/'); break
-            case 248:  setChar('o'); break
-            case 249:  setChar('u'); break
-            case 250:  setChar('u'); break
-            case 251:  setChar('u'); break
-            case 252:  setChar('u'); break
-            case 253:  setChar('y'); break
-            case 254:  setChar('b'); break
-            case 255:  setChar('y'); break
+            case 352:  extraChar << 'S'; break
+            case 357:  extraChar << 't'; break
+            case 341:  extraChar << 'r'; break
+            case 301:  extraChar << 'i'; break
+            case 324:  extraChar << 'n'; break
+            case 289:  extraChar << 'g'; break
+            case 137:  extraChar << '%'; break
+            case 138:  extraChar << 'S'; break
+            case 8249: extraChar << ' '; break
+            case 139:  extraChar << '<'; break
+            case 338:  extraChar << ' '; break
+            case 140:  extraChar << 'O'; extraChar << 'E'; break
+            case 381:  extraChar << ' '; break
+            case 142:  extraChar << 'Z'; break
+            case 8216: extraChar << ' '; break
+            case 8217: extraChar << ' '; break
+            case 145:  extraChar << ' '; break
+            case 146:  extraChar << ' '; break
+            case 180:  extraChar << '\'';break
+            case 8226: extraChar << ' '; break
+            case 8211: extraChar << ' '; break
+            case 8212: extraChar << ' '; break
+            case 149:  extraChar << ' '; break
+            case 150:  extraChar << ' '; break
+            case 151:  extraChar << ' '; break
+            case 166:  extraChar << ' '; break
+            case 173:  extraChar << '-'; break
+            case 732:  extraChar << ' '; break
+            case 152:  extraChar << '~'; break
+            case 8482: extraChar << ' '; break
+            case 153:  extraChar << '('; extraChar << 'T'; extraChar << 'M'; extraChar << ''; break
+            case 154:  extraChar << 's'; break
+            case 8250: extraChar << ' '; break
+            case 155:  extraChar << '>'; break
+            case 339:  extraChar << ' '; break
+            case 156:  extraChar << 'o'; extraChar << 'e'; break
+            case 382:  extraChar << ' '; break
+            case 158:  extraChar << 'z'; break
+            case 376:  extraChar << ' '; break
+            case 159:  extraChar << 'Y'; break
+            case 160:  extraChar << ' '; break
+            case 9632: extraChar << ' '; break
+            case 182:  extraChar << ' '; break
+            case 161:  extraChar << " "; break
+            case 172:  extraChar << '!'; break
+            case 162:  extraChar << 'c'; break
+            case 163:  extraChar << 'L'; break
+            case 164:  extraChar << '$'; break
+            case 165:  extraChar << 'Y'; break
+            case 167:  extraChar << 'S'; break
+            case 168:  extraChar << '.'; extraChar << '.'; break
+            case 169:  extraChar << '('; extraChar << 'c'; extraChar << ''; break
+            case 170:  extraChar << 'a'; break
+            case 174:  extraChar << '('; extraChar << 'R'; extraChar << ''; break
+            case 175:  extraChar << " "; break
+            case 184:  extraChar << '_'; break
+            case 176:  extraChar << ' '; break
+            case 186:  extraChar << 'o'; break
+            case 177:  extraChar << '+'; extraChar << '-'; break
+            case 178:  extraChar << '2'; break
+            case 179:  extraChar << '3'; break
+            case 181:  extraChar << 'u'; break
+            case 183:  extraChar << '.'; break
+            case 185:  extraChar << '1'; break
+            case 188:  extraChar << '1'; extraChar << '/'; extraChar << '4'; break
+            case 189:  extraChar << '1'; extraChar << '/'; extraChar << '2'; break
+            case 190:  extraChar << '3'; extraChar << '/'; extraChar << '4'; break
+            case 191:  extraChar << '?'; break
+            case 192:  extraChar << 'A'; break
+            case 193:  extraChar << 'A'; break
+            case 194:  extraChar << 'A'; break
+            case 195:  extraChar << 'A'; break
+            case 196:  extraChar << 'A'; break
+            case 197:  extraChar << 'A'; break
+            case 198:  extraChar << 'A'; extraChar << 'E'; break
+            case 199:  extraChar << 'C'; break
+            case 200:  extraChar << 'E'; break
+            case 201:  extraChar << 'E'; break
+            case 202:  extraChar << 'E'; break
+            case 203:  extraChar << 'E'; break
+            case 204:  extraChar << 'I'; break
+            case 205:  extraChar << 'I'; break
+            case 206:  extraChar << 'I'; break
+            case 207:  extraChar << 'I'; break
+            case 208:  extraChar << 'D'; break
+            case 209:  extraChar << 'N'; break
+            case 210:  extraChar << 'O'; break
+            case 211:  extraChar << 'O'; break
+            case 212:  extraChar << 'O'; break
+            case 213:  extraChar << 'O'; break
+            case 214:  extraChar << 'O'; break
+            case 215:  extraChar << 'x'; break
+            case 216:  extraChar << 'O'; break
+            case 217:  extraChar << 'U'; break
+            case 218:  extraChar << 'U'; break
+            case 219:  extraChar << 'U'; break
+            case 220:  extraChar << 'U'; break
+            case 221:  extraChar << 'Y'; break
+            case 222:  extraChar << 'P'; break
+            case 223:  extraChar << 's'; extraChar << 's'; break
+            case 224:  extraChar << 'a'; break
+            case 225:  extraChar << 'a'; break
+            case 226:  extraChar << 'a'; break
+            case 227:  extraChar << 'a'; break
+            case 228:  extraChar << 'a'; break
+            case 229:  extraChar << 'a'; break
+            case 230:  extraChar << 'a'; extraChar << 'e'; break
+            case 231:  extraChar << 'c'; break
+            case 232:  extraChar << 'e'; break
+            case 233:  extraChar << 'e'; break
+            case 234:  extraChar << 'e'; break
+            case 235:  extraChar << 'e'; break
+            case 236:  extraChar << 'i'; break
+            case 237:  extraChar << 'i'; break
+            case 238:  extraChar << 'i'; break
+            case 240:  extraChar << 'd'; break
+            case 241:  extraChar << 'n'; break
+            case 242:  extraChar << 'o'; break
+            case 243:  extraChar << 'o'; break
+            case 244:  extraChar << 'o'; break
+            case 245:  extraChar << 'o'; break
+            case 246:  extraChar << 'o'; break
+            case 247:  extraChar << '/'; break
+            case 248:  extraChar << 'o'; break
+            case 249:  extraChar << 'u'; break
+            case 250:  extraChar << 'u'; break
+            case 251:  extraChar << 'u'; break
+            case 252:  extraChar << 'u'; break
+            case 253:  extraChar << 'y'; break
+            case 254:  extraChar << 'b'; break
+            case 255:  extraChar << 'y'; break
         /* some addl cases for msft utf8s, mostly latin */
-            case 915:  setChar('T'); break
-            case 920:  setChar('O'); break
-            case 931:  setChar('E'); break
-            case 945:  setChar('a'); break
-            case 949:  setChar('e'); break
-            case 963:  setChar('s'); break
-            case 964:  setChar('t'); break
-            case 934:  setChar('p'); break
-            case 960:  setChar('p'); setChar('i'); break
-            case 966:  setChar('P'); break
-            case 8734: setChar('o'); setChar('o'); break
-            case 8359: setChar('P'); setChar('t'); setChar('s'); break
-            case 9617: setChar(' '); break
-            case 9618: setChar(' '); break
-            case 9619: setChar(' '); break
-            case 9532: setChar('+'); break
-            case 9574: setChar('T'); break
-            case 9553: setChar('|'); setChar('|'); break
-            case 8992: setChar(' '); break
-            case 8993: setChar(' '); break
-            case 9508: setChar(' '); break
-            case 9474: setChar('|'); break
-            case 9516: setChar('t'); break
-            case 8745: setChar('='); break
-            case 8801: setChar('+'); setChar('-'); break
-            case 8805: setChar('>'); setChar('='); break
-            case 8804: setChar('<'); setChar('='); break
-            case 8776: setChar('~'); break
-            case 8729: setChar('.'); break
-            case 8730: setChar('V'); break
-            case 8319: setChar('n'); break
-            case 9566: setChar(' '); break
-            case 9571: setChar(' '); break
-            case 9564: setChar(' '); break
-            case 9563: setChar(' '); break
-            case 9557: setChar(' '); break
-            case 8976: setChar(' '); break
-            case 9569: setChar(' '); break
-            case 9570: setChar(' '); break
-            case 9558: setChar(' '); break
-            case 9559: setChar(' '); break
-            case 9565: setChar(' '); break
+            case 915:  extraChar << 'T'; break
+            case 920:  extraChar << 'O'; break
+            case 931:  extraChar << 'E'; break
+            case 945:  extraChar << 'a'; break
+            case 949:  extraChar << 'e'; break
+            case 963:  extraChar << 's'; break
+            case 964:  extraChar << 't'; break
+            case 934:  extraChar << 'p'; break
+            case 960:  extraChar << 'p'; extraChar << 'i'; break
+            case 966:  extraChar << 'P'; break
+            case 8734: extraChar << 'o'; extraChar << 'o'; break
+            case 8359: extraChar << 'P'; extraChar << 't'; extraChar << 's'; break
+            case 9617: extraChar << ' '; break
+            case 9618: extraChar << ' '; break
+            case 9619: extraChar << ' '; break
+            case 9532: extraChar << '+'; break
+            case 9574: extraChar << 'T'; break
+            case 9553: extraChar << '|'; extraChar << '|'; break
+            case 8992: extraChar << ' '; break
+            case 8993: extraChar << ' '; break
+            case 9508: extraChar << ' '; break
+            case 9474: extraChar << '|'; break
+            case 9516: extraChar << 't'; break
+            case 8745: extraChar << '='; break
+            case 8801: extraChar << '+'; extraChar << '-'; break
+            case 8805: extraChar << '>'; extraChar << '='; break
+            case 8804: extraChar << '<'; extraChar << '='; break
+            case 8776: extraChar << '~'; break
+            case 8729: extraChar << '.'; break
+            case 8730: extraChar << 'V'; break
+            case 8319: extraChar << 'n'; break
+            case 9566: extraChar << ' '; break
+            case 9571: extraChar << ' '; break
+            case 9564: extraChar << ' '; break
+            case 9563: extraChar << ' '; break
+            case 9557: extraChar << ' '; break
+            case 8976: extraChar << ' '; break
+            case 9569: extraChar << ' '; break
+            case 9570: extraChar << ' '; break
+            case 9558: extraChar << ' '; break
+            case 9559: extraChar << ' '; break
+            case 9565: extraChar << ' '; break
 
-            case 0:    setChar(' '); break
-            case 1:    setChar(' '); break
-            case 2:    setChar(' '); break
-            case 3:    setChar(' '); break
-            case 4:    setChar(' '); break
-            case 5:    setChar(' '); break
-            case 6:    setChar(' '); break
-            case 7:    setChar(' '); break
-            case 8:    setChar(' '); break
-            case 11:   setChar(' '); break
-            case 12:   setChar(' '); break
-            case 14:   setChar(' '); break
-            case 15:   setChar(' '); break
-            case 16:   setChar(' '); break
-            case 17:   setChar(' '); break
-            case 18:   setChar(' '); break
-            case 19:   setChar(' '); break
-            case 20:   setChar(' '); break
-            case 21:   setChar(' '); break
-            case 22:   setChar(' '); break
-            case 23:   setChar(' '); break
-            case 24:   setChar(' '); break
-            case 25:   setChar(' '); break
-            case 26:   setChar(' '); break
-            case 27:   setChar(' '); break
-            case 28:   setChar(' '); break
-            case 29:   setChar(' '); break
-            case 31:   setChar(' '); break
+            case 0:    extraChar << ' '; break
+            case 1:    extraChar << ' '; break
+            case 2:    extraChar << ' '; break
+            case 3:    extraChar << ' '; break
+            case 4:    extraChar << ' '; break
+            case 5:    extraChar << ' '; break
+            case 6:    extraChar << ' '; break
+            case 7:    extraChar << ' '; break
+            case 8:    extraChar << ' '; break
+            case 11:   extraChar << ' '; break
+            case 12:   extraChar << ' '; break
+            case 14:   extraChar << ' '; break
+            case 15:   extraChar << ' '; break
+            case 16:   extraChar << ' '; break
+            case 17:   extraChar << ' '; break
+            case 18:   extraChar << ' '; break
+            case 19:   extraChar << ' '; break
+            case 20:   extraChar << ' '; break
+            case 21:   extraChar << ' '; break
+            case 22:   extraChar << ' '; break
+            case 23:   extraChar << ' '; break
+            case 24:   extraChar << ' '; break
+            case 25:   extraChar << ' '; break
+            case 26:   extraChar << ' '; break
+            case 27:   extraChar << ' '; break
+            case 28:   extraChar << ' '; break
+            case 29:   extraChar << ' '; break
+            case 31:   extraChar << ' '; break
             case 30:   break
             default:
-                setChar(Character.toString((char) d))
+                extraChar << Character.toString((char) d)
         }
-    }
-
-    static void setChar(String ch) {
-        extraChar << (ch as Character)
+        return extraChar.collect { it as Character}
     }
 }
