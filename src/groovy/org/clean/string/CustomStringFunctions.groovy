@@ -26,6 +26,14 @@ class CustomStringFunctions {
         String.metaClass.clean = {
             FixChar.removeSpecialCharacter(delegate)
         }
+
+        String.metaClass.cleanupHTML = {
+            delegate.replaceAll("<.*?>"," ")
+        }
+
+        String.metaClass.cleanAll = {
+            delegate.clean().cleanupHTML()
+        }
     }
 
 }

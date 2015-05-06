@@ -23,7 +23,7 @@ class FixChar {
         }
         char[] text_char = extraChar as char[]
 
-        return Normalizer.normalize(String.valueOf(text_char), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "")
+        return Normalizer.normalize(String.valueOf(text_char).trim(), Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "")
     }
 
     private static lookupInit() {
