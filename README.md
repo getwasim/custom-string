@@ -10,7 +10,7 @@ This plugin adds few custom methods to String class:
 
 ## Installation
 
-Download and extract the zip. Go to the root of the plugin, and run grails maven-install (from release plugin) which would build the plugin artifact for you in you local maven repository if you have one setup.
+Download and extract the zip. Make sure you have grails 2.4.4 set in environment variables. Go to the root of the plugin and run grails compile and then grails maven-install (from release plugin) which would build the plugin artifact for you in you local maven repository if you have one setup.
 Now just add the following in your BuildConfig.groovy
 
 ```
