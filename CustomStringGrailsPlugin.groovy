@@ -1,7 +1,7 @@
 import org.clean.string.CustomStringFunctions
 
 class CustomStringGrailsPlugin {
-    def version = "0.1"
+    def version = "0.2"
     def grailsVersion = "1.3.7 > *"
     def author = "Wasim Akhtar Khan"
     def authorEmail = "wasim.get@gmail.com"
@@ -13,7 +13,7 @@ class CustomStringGrailsPlugin {
     def scm = [url: 'https://github.com/getwasim/CustomString']
 
     def doWithDynamicMethods = { ctx ->
-        println "Class initialized... "
+        println "String cleaning method initialized... "
         CustomStringFunctions.inject()
     }
 }

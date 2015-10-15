@@ -1,4 +1,4 @@
-<plugin name='custom-string' version='0.2' grailsVersion='1.3.7 &gt; *'>
+<plugin name='custom-string' version='0.1' grailsVersion='1.3.7 &gt; *'>
   <author>Wasim Akhtar Khan</author>
   <authorEmail>wasim.get@gmail.com</authorEmail>
   <title>CustomString plugin</title>
