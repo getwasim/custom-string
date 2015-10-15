@@ -19,7 +19,9 @@ class FixChar {
 
         //Iterate over dirty String to get clean string from lookup method
         for(char ch: text.toCharArray()) {
-            extraChar += lookup[(int) ch] ?: [ch]
+			if((int) ch < 10000 && (int) ch > -1){
+				extraChar += lookup[(int) ch] ?: [ch]
+			}
         }
         char[] text_char = extraChar as char[]
 
