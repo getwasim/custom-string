@@ -1,0 +1,9 @@
+<plugin name='custom-string' version='0.2' grailsVersion='1.3.7 &gt; *'>
+  <author>Wasim Akhtar Khan</author>
+  <authorEmail>wasim.get@gmail.com</authorEmail>
+  <title>CustomString plugin</title>
+  <description>This plugin adds a few custom methods to the String class</description>
+  <documentation>http://grails.org/plugin/custom-string</documentation>
+  <type>CustomStringGrailsPlugin</type>
+  <resources />
+</plugin>

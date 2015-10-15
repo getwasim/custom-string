@@ -8,7 +8,6 @@
 /.idea
 /grails-custom-string-*.zip
 /grails-custom-string-*.zip.sha1
-/plugin.xml
 /target
 /web-app
 /wrapper
